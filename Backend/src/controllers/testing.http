@@ -1,0 +1,19 @@
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "Hamood",
+  "password": "secret"
+}
+
+###
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "username": "Hamood",
+  "aginame": "hella",
+  "password": "secret"
+}
+
+###
