@@ -220,8 +220,6 @@ onUpdated(() => {
     opacity: 1;
   }
 }
-
-
 .pulsating-circle {
   padding: 1px;
   border-radius: 100%;
