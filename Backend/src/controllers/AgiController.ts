@@ -7,7 +7,7 @@ class AgiController {
     @Get('/')
     async getChat(@Res() res: Response, @Req() req: Request) {
         try {
-            const response = await generatingResponse('Buddy', '')
+            const response = await generatingResponse('', 'hello')
             console.log("mindsDB connected successfully")
             res.json(response)
         } catch (e) {

@@ -1,20 +1,27 @@
-const ACC_TOKEN = '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';
-import * as fs from 'fs';
 import { HfInference } from '@huggingface/inference';
+
+const ACC_TOKEN = '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';
 const hf = new HfInference(ACC_TOKEN);
 
 const speech = async (text) => {
-    const output = await hf.textToSpeech({
-        model: 'espnet/kan-bayashi_ljspeech_vits',
-        inputs: text
-    });
+    try {
+        const output = await hf.textToSpeech({
+            model: 'espnet/kan-bayashi_ljspeech_vits',
+            inputs: text
+        });
 
-    const audioFilePath = './AudioFiles/output.flac';
-    const buffer = Buffer.from(new Uint8Array(await output.arrayBuffer()));
-    await fs.promises.writeFile(audioFilePath, buffer);
+        const audioBuffer = await output.arrayBuffer();
+        const audioBlob = new Blob([audioBuffer], { type: 'audio/flac' });
+
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const audio = new Audio();
+        audio.src = audioUrl;
+        audio.play();
+    } catch (error) {
+        console.error('Error:', error);
+    }
 };
 
 // Call the speech function with the text 'Hello'
-
-// Alternatively, you can export the function if needed:
 export default speech;

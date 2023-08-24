@@ -70,7 +70,6 @@
 import {computed, onMounted, onUpdated, ref} from "vue";
 import Swal from "sweetalert2";
 import http from "@/helpers/http";
-import speech from "@/AIModels/TTS.js"
 
 
 const inputValue = ref('')
@@ -81,9 +80,9 @@ const top = ref(null)
 const toggleVoiceClass = ref(false)
 const isRecording = ref(false);
 const user = ref('')
-const audioMedia = ref(null)
+import speech from "@/AIModels/TTS.js";
 
-const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const Recognition = window.webkitSpeechRecognition;
 
 const messages = ref([])
 
@@ -124,6 +123,10 @@ const sendMessage = async (event) => {
     messageText.value = null;
     return
   } else {
+    if (isRecording.value) {
+      sr.stop();
+      toggleVoiceClass.value = false
+    }
     messages.value.push({
       id: messages.value.length + 1,
       sender: user.value,
@@ -136,6 +139,7 @@ const sendMessage = async (event) => {
     const {data} = await http.post('/chat', {
       "text": text
     })
+    await speech(data.value)
     messages.value.push({
       id: messages.value.length + 1,
       sender: agiName.value,
@@ -143,11 +147,6 @@ const sendMessage = async (event) => {
       isUser: false
     })
   }
-}
-
-function playSound() {
-  const audio = new Audio(require('@/AIModels/AudioFiles/output.flac'));
-  audio.play()
 }
 
 function scrollToBottom() {
@@ -165,10 +164,6 @@ const fetchConversation = async () => {
   }
 }
 
-const fetchMessages = async () => {
-  // const {data} = await http.get(`/conversation/${}`)
-}
-
 const sr = new Recognition(); //speech recognition
 onMounted(() => {
   fetchConversation()
@@ -178,6 +173,7 @@ onMounted(() => {
   messages.value = [
     {id: 1, sender: agiName.value, text: welcomeMessage.value, isUser: false},
   ]
+  speech(welcomeMessage.value)
   sr.continuous = true;
   sr.interimResults = true;
 

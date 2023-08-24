@@ -29,6 +29,9 @@ const express_1 = require("@decorators/express");
 const conversation_1 = __importDefault(require("../entities/conversation"));
 const messages_1 = __importDefault(require("../entities/messages"));
 const typeorm_1 = require("typeorm");
+const ACC_TOKEN = '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';
+const inference_1 = require("@huggingface/inference");
+const hf = new inference_1.HfInference(ACC_TOKEN);
 // @ts-ignore
 let ConversationController = class ConversationController {
     getMessages(req, res) {

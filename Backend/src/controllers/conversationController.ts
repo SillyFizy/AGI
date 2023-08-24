@@ -5,6 +5,11 @@ import Conversation from "../entities/conversation";
 import Message from "../entities/messages";
 import {Equal} from "typeorm";
 
+const ACC_TOKEN = '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';
+import {HfInference} from '@huggingface/inference';
+
+const hf = new HfInference(ACC_TOKEN);
+
 
 // @ts-ignore
 @Controller('/conversation', [authMiddleware])

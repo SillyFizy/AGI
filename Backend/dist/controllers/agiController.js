@@ -30,7 +30,7 @@ let AgiController = class AgiController {
     getChat(res, req) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield (0, mindsDB_1.default)('Buddy', '');
+                const response = yield (0, mindsDB_1.default)('', 'hello');
                 console.log("mindsDB connected successfully");
                 res.json(response);
             }
